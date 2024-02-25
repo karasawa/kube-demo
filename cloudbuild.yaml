@@ -1,0 +1,17 @@
+steps:
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+        "gcloud secrets versions access latest --secret=kube-demo --format='get(payload.data)' | tr '_-' '/+' | base64 -d > .env"
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+        "docker build -t asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:v1.1.1 ."
+      ]
+images:
+  - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:v1.1.1'
