@@ -2,7 +2,7 @@ package controller
 
 import (
 	"kube/entity"
-	"kube/usercase"
+	"kube/usecase"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -16,10 +16,10 @@ type IUserController interface {
 }
 
 type userController struct {
-	uu usercase.IUserUsecase
+	uu usecase.IUserUsecase
 }
 
-func NewUserController(uu usercase.IUserUsecase) IUserController {
+func NewUserController(uu usecase.IUserUsecase) IUserController {
 	return &userController{uu}
 }
 

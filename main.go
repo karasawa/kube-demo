@@ -4,7 +4,7 @@ import (
 	"kube/controller"
 	"kube/driver"
 	"kube/repository"
-	"kube/usercase"
+	"kube/usecase"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -20,7 +20,7 @@ func main() {
 	e := echo.New()
 	db, _ := driver.InitDB()
 	ur := repository.NewUserRepository(db)
-	uu := usercase.NewUserUsecase(ur)
+	uu := usecase.NewUserUsecase(ur)
 	uc := controller.NewUserController(uu)
 	controller.InitRouting(e, uc)
 	e.Logger.Fatal(e.Start(":8080"))
