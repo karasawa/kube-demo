@@ -2,6 +2,7 @@ package main
 
 import (
 	"kube/controller"
+	"kube/driver"
 	"kube/repository"
 	"kube/usercase"
 	"log"
@@ -17,7 +18,8 @@ func main() {
 	}
 
 	e := echo.New()
-	ur := repository.NewUserRepository()
+	db, _ := driver.InitDB()
+	ur := repository.NewUserRepository(db)
 	uu := usercase.NewUserUsecase(ur)
 	uc := controller.NewUserController(uu)
 	controller.InitRouting(e, uc)

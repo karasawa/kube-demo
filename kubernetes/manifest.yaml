@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-gke
+spec:
+  selector:
+    matchLabels:
+      app: demo-gke
+  template:
+    metadata:
+      labels:
+        app: demo-gke
+    spec:
+      serviceAccountName: ksa-cloud-sql
+      containers:
+      - name: demo-gke
+        image: asia-northeast1-docker.pkg.dev/valiant-broker-412606/test-repository/kube:latest
+        ports:
+        - containerPort: 8080
+      - name: cloud-sql-proxy
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:latest
+        args:
+          # - "--auto-iam-authn"
+          - "--structured-logs"
+          - "--port=3306"
+          - "valiant-broker-412606:asia-northeast1:demo"
+        securityContext:
+          runAsNonRoot: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-gke-service
+  namespace: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: demo-gke
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

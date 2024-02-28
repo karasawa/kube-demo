@@ -6,12 +6,34 @@ steps:
         "-c",
         "gcloud secrets versions access latest --secret=kube-demo --format='get(payload.data)' | tr '_-' '/+' | base64 -d > .env"
       ]
+    id: get secret
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: "bash"
     args:
       [
         "-c",
-        "docker build -t asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:v1.1.1 ."
+        "docker build -t asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:latest ."
       ]
-images:
-  - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:v1.1.1'
+    id: docker build
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+        "docker push asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:latest"
+      ]
+    id: docker push
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+        "gcloud container clusters get-credentials autopilot-cluster-1 --region asia-northeast2 --project $PROJECT_ID"
+      ]
+    id: get gke credentials
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply', '-f', './kubernetes/manifest.yaml']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast2'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'
+    id: kubectl apply
