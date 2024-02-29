@@ -26,5 +26,9 @@ jobs:
       - name: Prepare gcloud CLI
         uses: google-github-actions/setup-gcloud@v1
 
-      - name: test
-        run: gcloud info
+      - name: Execute Cloud Build
+        run: |
+          gcloud builds submit --config cloudbuild.yaml \
+          --substitutions=_TAG_NAME="${TAG_NAME}"
+        env:
+          TAG_NAME: 'latest'

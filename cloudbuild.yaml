@@ -12,7 +12,7 @@ steps:
     args:
       [
         "-c",
-        "docker build -t asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:latest ."
+        "docker build -t asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:${_TAG_NAME} ."
       ]
     id: docker build
   - name: 'gcr.io/cloud-builders/docker'
@@ -20,7 +20,7 @@ steps:
     args:
       [
         "-c",
-        "docker push asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:latest"
+        "docker push asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:${_TAG_NAME}"
       ]
     id: docker push
   - name: gcr.io/cloud-builders/gcloud
