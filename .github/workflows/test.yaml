@@ -10,7 +10,7 @@
 #     runs-on: ubuntu-latest
 #     steps:
 #       - run: echo "Hello World"
-name: ${{ github.actor }} is learning GitHub Actions
+name: learning GitHub Actions
 on: [push]
 jobs:
   test_job1:
