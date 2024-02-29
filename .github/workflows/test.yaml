@@ -1,12 +1,20 @@
+# name: learn-github-actions
+# on: [push]
+#   push:
+#     branches:
+#       - main
+#   workflow_dispach:
+
+# jobs:
+#   check-bats-version:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - run: echo "Hello World"
+
 name: learn-github-actions
 on: [push]
-  # push:
-  #   branches:
-  #     - main
-  # workflow_dispach:
-
 jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Hello World"
+check-bats-version:
+runs-on: ubuntu-latest
+steps:
+- run: echo "Hello World"
