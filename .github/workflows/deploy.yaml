@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    permissions:
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: projects/150158199877/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+          service_account: my-service-account@my-project.iam.gserviceaccount.com
+
+      - name: Prepare gcloud CLI
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: test
+        run: gcloud info
