@@ -1,9 +1,9 @@
 name: learn-github-actions
-on:
-  push:
-    branches:
-      - main
-  workflow_dispach:
+on: [push]
+  # push:
+  #   branches:
+  #     - main
+  # workflow_dispach:
 
 jobs:
   check-bats-version:
