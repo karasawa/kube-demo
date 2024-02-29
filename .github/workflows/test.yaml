@@ -16,6 +16,10 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      name:
+        description: 'Name'
+        required: false
 jobs:
   test_job1:
     runs-on: ubuntu-latest
@@ -23,11 +27,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: hello_world
-        run: echo "Hello World1"
+        run: echo "Hello World1 ${{ github.event.inputs.name }}"
   test_job2:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: hello_world
-        run: echo "Hello World2"
+        run: echo "Hello World2 ${{ github.event.inputs.name }}"
