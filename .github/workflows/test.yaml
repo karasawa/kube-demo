@@ -15,7 +15,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispach:
+  workflow_dispatch:
 jobs:
   test_job1:
     runs-on: ubuntu-latest
