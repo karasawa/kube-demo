@@ -27,7 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: hello_world
-        run: echo "Hello World1 ${{ github.event.inputs.name }}"
+        run: echo "Hello World1 ${{ secrets.TEST_SECRET }}"
   test_job2:
     runs-on: ubuntu-latest
     steps:
