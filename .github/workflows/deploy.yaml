@@ -23,7 +23,7 @@ jobs:
       #     workload_identity_provider: projects/150158199877/locations/global/workloadIdentityPools/my-pool2/providers/my-provider2
       #     service_account: my-service-account@my-project.iam.gserviceaccount.com
 
-      - name: Authenticate to Google Cloud
+      - name: Prepare gcloud CLI
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
           service_account_key: ${{ secrets.SA_KEY }}
@@ -32,11 +32,16 @@ jobs:
       # - name: Prepare gcloud CLI
       #   uses: google-github-actions/setup-gcloud@v1
 
+      - name: Authenticate to GKE
+        uses: google-github-actions/get-gke-credentials@v0.2.1
+        with:
+          cluster_name: autopilot-cluster-1
+          location: asia-northeast2
+          credentials: ${{ secrets.SA_KEY }}
+
       - name: Execute Cloud Build
         run: |
           gcloud builds submit --config cloudbuild.yaml \
           --substitutions=_TAG_NAME="${TAG_NAME}"
-        # run: |
-        #   gcloud compute instances list
         env:
           TAG_NAME: 'latest'
