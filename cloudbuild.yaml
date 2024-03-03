@@ -31,9 +31,9 @@ steps:
         "gcloud container clusters get-credentials autopilot-cluster-1 --region asia-northeast2 --project $PROJECT_ID"
       ]
     id: get gke credentials
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['apply', '-f', './kubernetes/manifest.yaml']
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast2'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'
-    id: kubectl apply
+  # - name: 'gcr.io/cloud-builders/kubectl'
+  #   args: ['apply', '-f', './kubernetes/manifest.yaml']
+  #   env:
+  #     - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast2'
+  #     - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'
+  #   id: kubectl apply
