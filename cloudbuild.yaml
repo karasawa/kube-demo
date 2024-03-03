@@ -23,14 +23,14 @@ steps:
         "docker push asia-northeast1-docker.pkg.dev/$PROJECT_ID/test-repository/kube:${_TAG_NAME}"
       ]
     id: docker push
-  - name: gcr.io/cloud-builders/gcloud
-    entrypoint: "bash"
-    args:
-      [
-        "-c",
-        "gcloud container clusters get-credentials autopilot-cluster-1 --region asia-northeast2 --project $PROJECT_ID"
-      ]
-    id: get gke credentials
+  # - name: gcr.io/cloud-builders/gcloud
+  #   entrypoint: "bash"
+  #   args:
+  #     [
+  #       "-c",
+  #       "gcloud container clusters get-credentials autopilot-cluster-1 --region asia-northeast2 --project $PROJECT_ID"
+  #     ]
+  #   id: get gke credentials
   # - name: 'gcr.io/cloud-builders/kubectl'
   #   args: ['apply', '-f', './kubernetes/manifest.yaml']
   #   env:
