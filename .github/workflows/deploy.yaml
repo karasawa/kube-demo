@@ -55,7 +55,7 @@ jobs:
 
       - name: Image Build
         run: |-
-          docker build -t asia-northeast1-docker.pkg.dev ${{ secrets.PROJECT_ID }}/test-repository/kube:${{ env.TAG_NAME }} .
+          docker build -t asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/test-repository/kube:${{ env.TAG_NAME }} .
 
       - name: Image Push
         run: |-
