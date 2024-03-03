@@ -26,28 +26,3 @@ spec:
           - "valiant-broker-412606:asia-northeast1:demo"
         securityContext:
           runAsNonRoot: true
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: demo-gke-service
-  namespace: default
-spec:
-  type: NodePort
-  selector:
-    app: demo-gke
-  ports:
-  - protocol: TCP
-    port: 8080
-    targetPort: 8080
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: demo-gke-ingress
-spec:
-  defaultBackend:
-    service:
-      name: demo-gke-service
-      port:
-        number: 8080
