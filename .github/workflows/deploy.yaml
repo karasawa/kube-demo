@@ -64,10 +64,15 @@ jobs:
         run: |-
           docker push asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/test-repository/kube:${{ env.TAG_NAME }}
 
-      # - name: Set Kustomize
-      #   run: |-
-      #     curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-      #     chmod u+x ./kustomize
+      - name: Set Kustomize
+        run: |-
+          curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+          chmod u+x ./kustomize
 
       - name: Deploy
-        run: kubectl apply -f ./kubernetes/manifest.yaml
+        run: |-
+          cd kubernetes
+          ../kustomize edit set image asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/test-repository/kube:${{ env.TAG_NAME }}
+          ../kustomize build . | kubectl apply -f -
+          kubectl rollout status deployment/demo-gke
+          kubectl get services -o wide
