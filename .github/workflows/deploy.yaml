@@ -27,8 +27,10 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
 
       - name: Execute Cloud Build
+        # run: |
+        #   gcloud builds submit --config cloudbuild.yaml \
+        #   --substitutions=_TAG_NAME="${TAG_NAME}"
         run: |
-          gcloud builds submit --config cloudbuild.yaml \
-          --substitutions=_TAG_NAME="${TAG_NAME}"
+          gcloud compute instances list
         env:
           TAG_NAME: 'latest'
