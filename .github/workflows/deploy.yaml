@@ -6,6 +6,9 @@ on:
   #     - main
   workflow_dispatch:
 
+env:
+  TAG_NAME: 'latest'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -39,9 +42,29 @@ jobs:
           location: asia-northeast2
           credentials: ${{ secrets.SA_KEY }}
 
-      - name: Execute Cloud Build
-        run: |
-          gcloud builds submit --config cloudbuild.yaml \
-          --substitutions=_TAG_NAME="${TAG_NAME}"
-        env:
-          TAG_NAME: 'latest'
+      # - name: Execute Cloud Build
+      #   run: |
+      #     gcloud builds submit --config cloudbuild.yaml \
+      #     --substitutions=_TAG_NAME="${TAG_NAME}"
+      #   env:
+      #     TAG_NAME: 'latest'
+
+      - name: Get Secret
+        run: |-
+          gcloud secrets versions access latest --secret=kube-demo --format='get(payload.data)' | tr '_-' '/+' | base64 -d > .env
+
+      - name: Image Build
+        run: |-
+          docker build -t asia-northeast1-docker.pkg.dev ${{ secrets.PROJECT_ID }}/test-repository/kube:${{ env.TAG_NAME }} .
+
+      - name: Image Push
+        run: |-
+          docker push asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/test-repository/kube:${{ env.TAG_NAME }}
+
+      # - name: Set Kustomize
+      #   run: |-
+      #     curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+      #     chmod u+x ./kustomize
+
+      - name: Deploy
+        run: kubectl apply -f ./kubernetes/manifest.yaml
