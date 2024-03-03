@@ -53,6 +53,9 @@ jobs:
         run: |-
           gcloud secrets versions access latest --secret=kube-demo --format='get(payload.data)' | tr '_-' '/+' | base64 -d > .env
 
+      - name: Configure Docker
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
       - name: Image Build
         run: |-
           docker build -t asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/test-repository/kube:${{ env.TAG_NAME }} .
